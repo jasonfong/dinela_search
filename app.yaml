@@ -1,0 +1,27 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /parser/.*
+  script: dinela_search.wsgi.application
+
+- url: /.*
+  script: dinela_search.wsgi.application
+  login: admin
+
+libraries:
+- name: django
+  version: "1.11"
+- name: lxml
+  version: "latest"
+- name: pytz
+  version: "latest"
+
+builtins:
+- appstats: on
+- deferred: on
+- remote_api: on
+
+env_variables:
+  DJANGO_SETTINGS_MODULE: 'dinela_search.settings'
