@@ -28,6 +28,7 @@ class Restaurant(ndb.Model):
     menus_ocr_done = ndb.BooleanProperty(default=False)
 
     updated = ndb.DateTimeProperty(auto_now=True)
+    search_updated = ndb.DateTimeProperty()
 
     def _save_menu(self, gcs_bucket, meal_type, file_ext, data):
         blob = storage.Blob(

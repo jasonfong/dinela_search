@@ -1,8 +1,10 @@
 import logging
 
+from datetime import datetime
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.views.generic import View
+from google.appengine.api import search
 
 from dinela_search.models import Restaurant
 from dinela_search.parser import DineLAParser
@@ -64,4 +66,48 @@ class ProcessMenusView(View):
         return JsonResponse({
             "results": results,
             "errors": errors
+        })
+
+class UpdateSearchIndexView(View):
+    def post(self, request, *args, **kwargs):
+        if request.META.get('HTTP_API_KEY') != settings.ADMIN_API_KEY:
+            return HttpResponseForbidden()
+
+        limit = int(request.GET.get('limit', 3))
+
+        qry = Restaurant.query(Restaurant.search_updated==None)
+        
+        indexed = []
+        errors = []
+
+        index = search.Index(name='restaurant_search_v1')
+
+        for item in qry.fetch(limit):
+            fields = [
+                search.TextField(name='name', value=item.name),
+                search.AtomField(name='cuisine', value=item.cuisine),
+                search.AtomField(name='neighborhood', value=item.neighborhood),
+                search.NumberField(name='lunch_price', value=item.lunch_price or 0),
+                search.TextField(name='lunch_menu', value=item.lunch_menu_text),
+                search.NumberField(name='dinner_price', value=item.dinner_price or 0),
+                search.TextField(name='dinner_menu', value=item.dinner_menu_text),
+            ]
+
+            d = search.Document(doc_id=item.key.id(), fields=fields)
+
+            try:
+                index.put(d)
+                item.search_updated = datetime.now()
+                item.put()
+            except search.Error:
+                logging.exception("Error indexing: %s" % item.name)
+                errors.append(item.name)
+            else:
+                indexed.append(item.name)
+
+        return JsonResponse({
+            "indexed": indexed,
+            "num_indexed": len(indexed),
+            "errors": errors,
+            "num_errors": len(errors),
         })
