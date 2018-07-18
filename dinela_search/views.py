@@ -30,7 +30,7 @@ class ProcessMenusView(View):
 
         limit = int(request.GET.get('limit', 3))
 
-        client = VisionClient(auth=request.META['HTTP_AUTHORIZATION'])
+        client = VisionClient()
 
         qry = Restaurant.query(Restaurant.menus_ocr_done==False)
         

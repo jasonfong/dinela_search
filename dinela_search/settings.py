@@ -79,6 +79,7 @@ STATIC_URL = '/static/'
 DINELA_BASEURL = "https://www.discoverlosangeles.com/dinela-los-angeles-restaurant-week"
 DINELA_INDEX_FILE_PATH = "data/index.html"
 GCS_BUCKET = "YOUR_GCS_BUCKET"
+GOOGLE_CLOUD_VISION_API_KEY = "REPLACE_ON_DEPLOYMENT-129dc531-ad4a-430f-aa1e-1b241f5435d1"
 
 ADMIN_API_KEY = "REPLACE_ON_DEPLOYMENT-1e3db3d0-59d0-4e13-aafe-cc228e527c90"
 

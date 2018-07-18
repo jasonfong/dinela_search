@@ -1,11 +1,13 @@
 import json
 import logging
+
+from django.conf import settings
 import requests
 
 
 class VisionClient(object):
-    def __init__(self, auth):
-        self.auth = auth
+    def __init__(self):
+        pass
 
     def do_call(self, image_url):
         payload = {
@@ -16,11 +18,11 @@ class VisionClient(object):
         }
 
         resp = requests.post(
-            url='https://vision.googleapis.com/v1/images:annotate',
+            url="https://vision.googleapis.com/v1/images:annotate",
             headers={
-                'Authorization': self.auth,
-                'Content-Type': 'application/json; charset=utf-8',
+                "Content-Type": "application/json; charset=utf-8",
             },
+            params={"key": settings.GOOGLE_CLOUD_VISION_API_KEY},
             data=json.dumps(payload),
         )
 
