@@ -8,7 +8,7 @@ handlers:
 
 - url: /.*
   script: dinela_search.wsgi.application
-  login: admin
+  login: required
 
 libraries:
 - name: django

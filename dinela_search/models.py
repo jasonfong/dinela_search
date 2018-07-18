@@ -52,3 +52,7 @@ class Restaurant(ndb.Model):
             _ , ext = os.path.splitext(self.dinner_menu_url)
             resp = requests.get(self.dinner_menu_url)
             self._save_menu(gcs_bucket, 'dinner', ext, resp.content)
+
+
+class Account(ndb.Model):
+    email = ndb.StringProperty(required=True)
