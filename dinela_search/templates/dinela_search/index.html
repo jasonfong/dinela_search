@@ -1,0 +1,18 @@
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Cuisine</th>
+        <th>Neighborhood</th>
+        <th>Lunch</th>
+        <th>Dinner</th>
+    </tr>    
+    {% for result in results %}
+    <tr>
+        <td><a href="{{ dinela_baseurl }}/{{ result.key.id }}/menu">{{ result.name }}</a></td>
+        <td>{{ result.cuisine }}</td>
+        <td>{{ result.neighborhood }}</td>
+        <td>{{ result.lunch_price }}</td>
+        <td>{{ result.dinner_price }}</td>
+    </tr>
+    {% endfor %}
+</table>

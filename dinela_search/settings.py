@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'dinela_search',
 ]
 
 MIDDLEWARE = [
@@ -82,6 +83,8 @@ GCS_BUCKET = "YOUR_GCS_BUCKET"
 GOOGLE_CLOUD_VISION_API_KEY = "REPLACE_ON_DEPLOYMENT-129dc531-ad4a-430f-aa1e-1b241f5435d1"
 
 ADMIN_API_KEY = "REPLACE_ON_DEPLOYMENT-1e3db3d0-59d0-4e13-aafe-cc228e527c90"
+
+SEARCH_INDEX = "restaurant_search_v1"
 
 
 try:
