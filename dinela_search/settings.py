@@ -76,6 +76,7 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static_root'
 
 DINELA_BASEURL = "https://www.discoverlosangeles.com/dinela-los-angeles-restaurant-week"
 DINELA_INDEX_FILE_PATH = "data/index.html"

@@ -3,6 +3,7 @@
 /lib
 /test_scripts
 /data
+/static_root
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

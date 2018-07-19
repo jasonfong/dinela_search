@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^data/process_menus$', views_data.ProcessMenusView.as_view(), name='process_menus'),
     url(r'^data/update_search$', views_data.UpdateSearchIndexView.as_view(), name='update_search'),
 
+    url(r'^test$', views.TestView.as_view(), name='test'),
     url(r'^search$', views.SearchView.as_view(), name='search'),
     url(r'^$', views.SearchView.as_view(), name='index'),
 ]

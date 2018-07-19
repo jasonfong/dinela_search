@@ -1,18 +1,104 @@
-<table>
-    <tr>
-        <th>Name</th>
-        <th>Cuisine</th>
-        <th>Neighborhood</th>
-        <th>Lunch</th>
-        <th>Dinner</th>
-    </tr>    
-    {% for result in results %}
-    <tr>
-        <td><a href="{{ dinela_baseurl }}/{{ result.key.id }}/menu">{{ result.name }}</a></td>
-        <td>{{ result.cuisine }}</td>
-        <td>{{ result.neighborhood }}</td>
-        <td>{{ result.lunch_price }}</td>
-        <td>{{ result.dinner_price }}</td>
-    </tr>
-    {% endfor %}
-</table>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Starter Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/starter-template.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="#">Los Angeles Restaurant Week Search</a>
+      
+      <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button> -->
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <!-- <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">Disabled</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </li> -->
+        </ul> 
+        <a class="btn btn-primary" href="https://github.com/jasonfong/dinela_search" role="button">GitHub</a>
+      </div>
+    </nav>
+
+    <main role="main" class="container">
+
+      <div>
+        <form action="/search" method="get">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Restaurant Query</label>
+            {% if query %}
+            <input type="text" class="form-control" id="query" name="q" placeholder="Sample query: foie gras neighborhood:downtown" value="{{ query }}">
+            {% else %}
+            <input type="text" class="form-control" id="query" name="q" placeholder="Sample query: foie gras neighborhood:downtown">
+            {% endif %}
+            <small id="queryHelp" class="form-text text-muted">Free form text search for menu items. attribute:value for neighborhood, cuisine, lunch_price, and dinner_price.</small>
+          </div>
+          <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+      </div>
+      <br/>
+      <div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Cuisine</th>
+              <th scope="col">Neighborhood</th>
+              <th scope="col">Lunch</th>
+              <th scope="col">Dinner</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for result in results %}
+            <tr>
+              <td><a href="{{ dinela_baseurl }}/{{ result.key.id }}/menu">{{ result.name }}</a></td>
+              <td>{{ result.cuisine }}</td>
+              <td>{{ result.neighborhood }}</td>
+              <td>{{ result.lunch_price }}</td>
+              <td>{{ result.dinner_price }}</td>
+            </tr>
+            <tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- <div class="starter-template">
+        <h1>Bootstrap starter template</h1>
+        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+      </div> -->
+
+    </main><!-- /.container -->
+
+    <script src="/static/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
