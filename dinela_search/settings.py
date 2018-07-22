@@ -90,6 +90,9 @@ SEARCH_INDEX = "restaurant_search_v1"
 DEFAULT_SEARCH_LIMIT = 50
 HARD_SEARCH_LIMIT = 100
 
+RATE_LIMIT = 100
+RATE_LIMIT_WINDOW = 3600
+
 
 try:
     from local_settings import *

@@ -2,11 +2,13 @@
 
 Making a better search engine for DineLA restaurant week in Los Angeles. Restaurant week is great and all... but I really wish their website had more search options!
 
-Adding more search capabilities:
-* Menu items (done!)
-* Ratings (coming soon...)
-* Location distance (coming soon...)
-* Atmosphere tags (coming soon...)
+Additional Search Options:
+* Menu items
+
+Possible Future Additions:
+* Ratings
+* Location distance
+* Atmosphere tags
 
 # Technology used
 
