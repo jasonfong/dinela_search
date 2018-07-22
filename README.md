@@ -2,7 +2,7 @@
 
 Making a better search engine for DineLA restaurant week in Los Angeles. Restaurant week is great and all... but I really wish their website had more search options!
 
-[See the search app here.]([https://atomic-elixir-210308.appspot.com/search)
+[See the search app here.](https://atomic-elixir-210308.appspot.com/search)
 
 Additional Search Options:
 * Menu items
