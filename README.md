@@ -2,6 +2,8 @@
 
 Making a better search engine for DineLA restaurant week in Los Angeles. Restaurant week is great and all... but I really wish their website had more search options!
 
+[See the search app here.]([https://atomic-elixir-210308.appspot.com/search)
+
 Additional Search Options:
 * Menu items
 
@@ -36,7 +38,3 @@ Create a "data" directory in the root of this project and paste the result of th
 `data/index.html`
 
 That will provide the listings data used by this app.
-
-# Can you just host a working version of this for me?
-
-Well... yes... but I'm pretty sure somebody will get upset at me for that. But if you know me in real life, contact me and maybe we can work something out. =)
