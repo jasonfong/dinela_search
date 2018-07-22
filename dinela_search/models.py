@@ -7,9 +7,40 @@ from google.appengine.ext import ndb
 
 
 class Restaurant(ndb.Model):
+    CUISINE_CHOICES = [
+        'American', 'American (new)', 'Argentinian', 'Asian Fusion',
+        'Barbecue', 'Brazilian', 'British', 'Burgers', 'Cajun',
+        'Californian', 'Chinese', 'Euro-Asian', 'Filipino', 'French',
+        'Gastropub', 'Hawaiian', 'Indian', 'Indonesian', 'International',
+        'Italian', 'Japanese', 'Latin', 'Latin Fusion', 'Mediterranean',
+        'Mexican', 'Moroccan', 'Seafood', 'Soul Food', 'Southern', 'Spanish',
+        'Steakhouse', 'Sushi', 'Thai', 'Unknown', 'Vegan', 'Vegetarian',
+        'Vietnamese',
+    ]
+
+    NEIGHBORHOOD_CHOICES = [
+        'Agoura Hills', 'Alhambra', 'Arcadia', 'Arts District',
+        'Atwater Village', 'Bel-Air', 'Beverly', 'Beverly Hills', 'Brentwood',
+        'Burbank', 'Calabasas', 'Canoga Park', 'Century City', 'Cerritos',
+        'Chinatown', 'Culver City', 'Downey', 'Downtown', 'Eagle Rock',
+        'Echo Park', 'El Segundo', 'Encino', 'Fairfax',
+        'Fashion/Jewelry District', 'Glendale', 'Granada Hills',
+        'Hermosa Beach', 'Highland Park', 'Hollywood', 'Koreatown', 'La Brea',
+        'Larchmont', 'Long Beach', 'Los Feliz', 'Malibu', 'Manhattan Beach',
+        'Mar Vista', 'Marina del Rey', 'Monterey Park', 'Pacific Palisades',
+        'Pasadena', 'Pico Rivera', 'Pico-Robertson', 'Playa del Rey',
+        'Pomona', 'Rancho Palos Verdes', 'Redondo Beach', 'San Gabriel',
+        'Santa Monica', 'Sawtelle Japantown', 'Sherman Oaks', 'Silver Lake',
+        'South Pasadena', 'Studio City', 'Tarzana', 'Toluca Lake', 'Torrance',
+        'Valencia', 'Valley Village', 'Van Nuys', 'Venice', 'West Hollywood',
+        'West Los Angeles', 'Westchester', 'Westlake Village', 'Westwood',
+        'Woodland Hills',
+    ]
+
     name = ndb.StringProperty(required=True)
-    cuisine = ndb.StringProperty(required=True)
-    neighborhood = ndb.StringProperty(required=True)
+    cuisine = ndb.StringProperty(required=True, choices=CUISINE_CHOICES)
+    neighborhood = ndb.StringProperty(required=True,
+                                      choices=NEIGHBORHOOD_CHOICES)
     tags = ndb.StringProperty(repeated=True)
 
     address_lines = ndb.StringProperty(repeated=True)

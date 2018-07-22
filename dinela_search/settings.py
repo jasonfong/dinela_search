@@ -87,6 +87,9 @@ ADMIN_API_KEY = "REPLACE_ON_DEPLOYMENT-1e3db3d0-59d0-4e13-aafe-cc228e527c90"
 
 SEARCH_INDEX = "restaurant_search_v1"
 
+DEFAULT_SEARCH_LIMIT = 50
+HARD_SEARCH_LIMIT = 100
+
 
 try:
     from local_settings import *

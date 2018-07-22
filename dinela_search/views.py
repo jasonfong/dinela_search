@@ -1,6 +1,9 @@
+import logging
+
 from django.conf import settings
 from django.http import HttpResponseForbidden
 from django.shortcuts import render
+from django.utils.http import urlencode
 from django.views.generic import View
 from google.appengine.api import search, users
 from google.appengine.ext import ndb
@@ -22,52 +25,51 @@ class SearchView(View):
         if not authorized:
             return HttpResponseForbidden()
 
-        query = request.GET.get('q', '')
+        query_clauses = []
+
+        query = request.GET.get('q', '').strip()
+        cuisine = request.GET.get('cuisine', '').strip()
+        neighborhood = request.GET.get('neighborhood', '').strip()
+        limit = int(request.GET.get('limit', settings.DEFAULT_SEARCH_LIMIT))
+
+        if limit > settings.HARD_SEARCH_LIMIT:
+            limit = settings.HARD_SEARCH_LIMIT
+
+        if query:
+            query_clauses.append(query)
+
+        if cuisine:
+            query_clauses.append('cuisine:"%s"' % cuisine)
+        if neighborhood:
+            query_clauses.append('neighborhood:"%s"' % neighborhood)
+
+        combined_query = ' AND '.join(query_clauses)
+
+        logging.debug('combined query: %s' % combined_query)
+
         index = search.Index(settings.SEARCH_INDEX)
-        search_results = index.search(query)
+        search_query = search.Query(
+            query_string=combined_query,
+            options=search.QueryOptions(limit=limit)
+        )
+        search_results = index.search(search_query)
 
         resto_ids = [d.doc_id for d in search_results]
 
         restaurants = ndb.get_multi([ndb.Key(Restaurant, k) for k in resto_ids])
+        restaurants.sort(key=lambda x: x.name)
 
         return render(
             request,
             'dinela_search/index.html',
             {
                 'results': restaurants,
-                'dinela_baseurl': settings.DINELA_BASEURL,
+                'dinelaBaseurl': settings.DINELA_BASEURL,
                 'query': query,
-            }
-        )
-
-
-class TestView(View):
-    def get(self, request, *args, **kwargs):
-        google_user = users.get_current_user()
-
-        authorized = False
-
-        if google_user:
-            account = Account.query(Account.email==google_user.email()).get()
-            if account:
-                authorized = True
-
-        if not authorized:
-            return HttpResponseForbidden()
-
-        query = request.GET.get('q', '')
-        index = search.Index(settings.SEARCH_INDEX)
-        search_results = index.search(query)
-
-        resto_ids = [d.doc_id for d in search_results]
-
-        restaurants = ndb.get_multi([ndb.Key(Restaurant, k) for k in resto_ids])
-
-        return render(
-            request,
-            'dinela_search/test.html',
-            {
-                'results': restaurants,
-                'dinela_baseurl': settings.DINELA_BASEURL,
+                'selectedCuisine': cuisine,
+                'selectedNeighborhood': neighborhood,
+                'cuisines': Restaurant.CUISINE_CHOICES,
+                'neighborhoods': Restaurant.NEIGHBORHOOD_CHOICES,
+                'limit': limit,
             }
         )

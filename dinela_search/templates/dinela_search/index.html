@@ -19,30 +19,9 @@
 
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
       <a class="navbar-brand" href="#">Los Angeles Restaurant Week Search</a>
-      
-      <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button> -->
 
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
-          <!-- <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#">Disabled</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li> -->
         </ul> 
         <a class="btn btn-primary" href="https://github.com/jasonfong/dinela_search" role="button">GitHub</a>
       </div>
@@ -50,20 +29,49 @@
 
     <main role="main" class="container">
 
-      <div>
-        <form action="/search" method="get">
-          <div class="form-group">
-            <label for="exampleInputEmail1">Restaurant Query</label>
-            {% if query %}
-            <input type="text" class="form-control" id="query" name="q" placeholder="Sample query: foie gras neighborhood:downtown" value="{{ query }}">
-            {% else %}
-            <input type="text" class="form-control" id="query" name="q" placeholder="Sample query: foie gras neighborhood:downtown">
-            {% endif %}
-            <small id="queryHelp" class="form-text text-muted">Free form text search for menu items. attribute:value for neighborhood, cuisine, lunch_price, and dinner_price.</small>
+      <form action="/search" method="get">
+        <div class="form-group">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-10">
+                  <label for="queryInput">Menu Items</label>
+                  {% if query %}
+                  <input type="text" class="form-control" id="queryInput" name="q" placeholder="Sample query: foie gras neighborhood:downtown" value="{{ query }}">
+                  {% else %}
+                  <input type="text" class="form-control" id="queryInput" name="q" placeholder="Sample query: foie gras neighborhood:downtown">
+                  {% endif %}
+                  <small id="queryHelp" class="form-text text-muted">Search for one or more menu items.</small>
+              </div>
+              <div class="col-sm">
+                <label for="queryInput">Max Results</label>
+                <input type="text" class="form-control" id="limitInput" name="limit" value="{% if limit %}{{ limit }}{% else %}50{% endif %}">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm">
+                <label for="cuisineInput">Cuisine</label>
+                <select class="custom-select" id="cuisineInput" name="cuisine">
+                  <option value=""{% if not selectedCuisine %} selected{% endif %}>All Cuisines</option>
+                  {% for c in cuisines %}
+                  <option value="{{ c }}"{% if selectedCuisine == c %} selected{% endif %}>{{ c }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-sm">
+                <label for="neighborhoodInput">Neighborhood</label>
+                <select class="custom-select" id="neighborhoodInput" name="neighborhood">
+                  <option value=""{% if not selectedNeighborhood %} selected{% endif %}>All Neighborhoods</option>
+                  {% for n in neighborhoods %}
+                  <option value="{{ n }}"{% if selectedNeighborhood == n %} selected{% endif %}>{{ n }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
           </div>
-          <button type="submit" class="btn btn-primary">Search</button>
-        </form>
-      </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+      </form>
+
       <br/>
       <div>
         <table class="table">
@@ -79,7 +87,7 @@
           <tbody>
             {% for result in results %}
             <tr>
-              <td><a href="{{ dinela_baseurl }}/{{ result.key.id }}/menu">{{ result.name }}</a></td>
+              <td><a href="{{ dinelaBaseurl }}/{{ result.key.id }}/menu">{{ result.name }}</a></td>
               <td>{{ result.cuisine }}</td>
               <td>{{ result.neighborhood }}</td>
               <td>{{ result.lunch_price }}</td>
@@ -90,11 +98,6 @@
           </tbody>
         </table>
       </div>
-
-      <!-- <div class="starter-template">
-        <h1>Bootstrap starter template</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
-      </div> -->
 
     </main><!-- /.container -->
 
