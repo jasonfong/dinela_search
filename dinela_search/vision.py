@@ -29,7 +29,7 @@ class VisionClient(object):
         try:
             text = resp.json()['responses'][0]['fullTextAnnotation']['text']
         except Exception as err:
-            logging.exception('Error while parsing: %s' % resp.text)
+            logging.exception('Error while parsing for {}: {}'.format(image_url, resp.text))
             raise err
 
         return text
@@ -38,9 +38,12 @@ class VisionClient(object):
         # Retry call once if it fails
         try:
             text = self.do_call(image_url)
-        except Exception as err:
-            logging.warning("Failed once on: %s" % image_url)
-            text = self.do_call(image_url)
-            raise err
+        except Exception:
+            logging.exception("Failed once on: %s" % image_url)
+            try:
+                text = self.do_call(image_url)
+            except Exception:
+                logging.exception("Failed on final try on: %s" % image_url)
+                text = None
 
         return text

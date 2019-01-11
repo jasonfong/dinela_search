@@ -5,6 +5,7 @@ from django.conf import settings
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.views.generic import View
 from google.appengine.api import search
+import requests
 
 from dinela_search.models import Restaurant
 from dinela_search.parser import DineLAParser
@@ -39,8 +40,13 @@ class ProcessMenusView(View):
         
         results = []
         errors = []
+        menu_missing = []
 
         for item in qry.fetch(limit):
+            if not item.lunch_menu_gcs and not item.dinner_menu_gcs:
+                menu_missing.append(item.name)
+                continue
+
             if item.lunch_menu_gcs:
                 image_uri = item.lunch_menu_gcs
                 text = client.get_text(image_uri)
@@ -51,22 +57,24 @@ class ProcessMenusView(View):
                 text = client.get_text(image_uri)
                 item.dinner_menu_text = text
 
-            if not item.lunch_menu_text and not item.dinner_menu_text:
+            if ((item.lunch_menu_gcs and not item.lunch_menu_text) or
+                (item.dinner_menu_gcs and not item.dinner_menu_text)):
                 logging.error('Failed to parse a menu for: %s' % item.name)
                 errors.append(item.name)
             else:
                 item.menus_ocr_done = True
                 item.put()
 
-            results.append({
-                "name": item.name,
-                "lunch": item.lunch_menu_text and len(item.lunch_menu_text),
-                "dinner": item.dinner_menu_text and len(item.dinner_menu_text),
-            })
+                results.append({
+                    "name": item.name,
+                    "lunch": item.lunch_menu_text and len(item.lunch_menu_text),
+                    "dinner": item.dinner_menu_text and len(item.dinner_menu_text),
+                })
 
         return JsonResponse({
             "results": results,
-            "errors": errors
+            "errors": errors,
+            "menu_missing": menu_missing,
         })
 
 
